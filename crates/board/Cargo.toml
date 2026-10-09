@@ -1,0 +1,11 @@
+[package]
+name = "lazyref-board"
+description = "LazyRef board model: stickers, canvas, interactions, persistence. Platform-free (no egui, no Android); the app crates bridge it to a window."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+purcore = { path = "../purcore" }
+sha2 = "0.10"
+image = { version = "0.25", default-features = false, features = ["png", "jpeg"] }
