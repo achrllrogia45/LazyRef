@@ -7,3 +7,7 @@ license.workspace = true
 [dependencies]
 rusqlite = { version = "0.40", features = ["bundled"] }
 md-5 = "0.11"
+
+[dev-dependencies]
+# same version/features as the regular dep — tests exercise storage classes directly
+rusqlite = { version = "0.40", features = ["bundled"] }

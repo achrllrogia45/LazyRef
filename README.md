@@ -21,16 +21,17 @@ crates/app       board UI — desktop-first (egui/eframe); Android target later
 
 ## Status
 
-- [ ] **purcore port** — container/checksum/blobs/scene/db/purfile/legacy + corpus tests green
-- [ ] **desktop board prototype** — pan/zoom canvas, image stickers (egui)
+- [x] **purcore port** — 7 modules + BE helper; `cargo test -p purcore` 10/10 green: byte-identical rebuild of `S1_redbar-new.pur` (38,671 B), 16/16 blob round-trips, legacy v1.x parity, latin-1 storage classes
+- [x] **desktop board prototype** — egui canvas: pan/zoom (zoom-at-cursor invariant tested), placeholder stickers; `cargo test -p droidref` 11/11 green
 - [ ] **Android build** — NDK toolchain + `android-activity`, APK output
 - [ ] PureRef desktop round-trip conformance for Rust-written files
 
 ## Build & test
 
 ```bash
-cargo test -p purcore          # format core tests (corpus fixtures)
-cargo run  -p droidref         # desktop board (later)
+cargo test -p purcore          # format core tests (golden corpus fixtures)
+cargo test -p droidref         # camera math + board invariants
+cargo run  -p droidref         # desktop board prototype (needs a display)
 ```
 
 ## License
