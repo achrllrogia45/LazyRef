@@ -1,5 +1,6 @@
 [package]
-name = "droidref"
+name = "lazyref"
+description = "LazyRef — a PureRef-compatible image reference board (Android-first; this crate is the egui board app)."
 version.workspace = true
 edition.workspace = true
 license.workspace = true

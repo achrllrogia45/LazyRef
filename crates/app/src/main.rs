@@ -1,13 +1,14 @@
-//! DroidRef-rs board prototype: infinite grid + placeholder stickers on a
-//! pan/zoom canvas. Desktop-first; Android window glue comes later.
+//! LazyRef board prototype: infinite grid + placeholder stickers on a
+//! pan/zoom canvas. This binary is the desktop dev harness; the Android app
+//! will build on the same core.
 //!
 //! World space is the board. Each sticker is rendered with the same pipeline
-//! as the Kotlin app's `StickerTransform`: translate(position) then rotate
+//! as the DroidRef app's `StickerTransform`: translate(position) then rotate
 //! about the sticker's center (scale folded into w/h for now).
 
-use droidref::camera::Camera;
-use droidref::egui::emath::Rot2;
-use droidref::egui::{self, pos2, Color32, CornerRadius, Key, Pos2, Rect, Sense, Shape, Stroke, Vec2};
+use lazyref::camera::Camera;
+use lazyref::egui::emath::Rot2;
+use lazyref::egui::{self, pos2, Color32, CornerRadius, Key, Pos2, Rect, Sense, Shape, Stroke, Vec2};
 
 /// (x, y) is the sticker's center in world space.
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -157,10 +158,10 @@ fn main() -> eframe::Result {
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
             .with_inner_size([1280.0, 800.0])
-            .with_title("DroidRef-rs"),
+            .with_title("LazyRef"),
         ..Default::default()
     };
-    eframe::run_native("DroidRef-rs", options, Box::new(|_cc| Ok(Box::new(BoardApp::new()))))
+    eframe::run_native("LazyRef", options, Box::new(|_cc| Ok(Box::new(BoardApp::new()))))
 }
 
 #[cfg(test)]

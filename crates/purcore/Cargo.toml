@@ -1,5 +1,6 @@
 [package]
 name = "purcore"
+description = "Read and write PureRef 2.x `.pur` scene files: container codec, blob codecs, SQLite store, byte-identical writer."
 version.workspace = true
 edition.workspace = true
 license.workspace = true

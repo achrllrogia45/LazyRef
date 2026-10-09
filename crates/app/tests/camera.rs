@@ -1,8 +1,8 @@
 //! Integration: drive the camera the way the app's event loop does and check
 //! the invariants hold end to end (fit -> pan -> repeated zoom-at-cursor).
 
-use droidref::camera::Camera;
-use droidref::egui::{pos2, Pos2, Rect, Vec2};
+use lazyref::camera::Camera;
+use lazyref::egui::{pos2, Pos2, Rect, Vec2};
 
 fn close(a: f32, b: f32) -> bool {
     (a - b).abs() <= 1e-3 * (1.0 + a.abs().max(b.abs()))
