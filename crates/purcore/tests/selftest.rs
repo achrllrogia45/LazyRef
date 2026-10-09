@@ -1,8 +1,6 @@
-//! pur-core selftest — Rust port of the Kotlin suite:
-//! `PurCoreSelftest.kt` (blob codecs / container / legacy dump diff),
-//! `BlobBindingTest.kt` (SQLite storage classes, the R1 latin-1 hazard),
-//! and the byte-identical `writeBytes` rebuild (strengthened from the container-rebuild
-//! check: reads the S1 scene + thumbnail and rewrites the *whole file* from scratch).
+//! pur-core selftest — blob codecs, container, legacy dump diff, SQLite storage classes
+//! (the latin-1 TEXT hazard), and the byte-identical `writeBytes` rebuild (reads the S1
+//! scene + thumbnail and rewrites the whole file from scratch).
 //!
 //! Fixtures are module-relative (`tests/fixtures/...`) via `CARGO_MANIFEST_DIR`.
 
@@ -90,7 +88,7 @@ fn blob_codecs() {
         );
     }
 
-    // known values (from recon/33 + corpus extraction)
+    // known values (corpus extraction)
     let one = |n: &str| fx.iter().find(|f| f.name == n).unwrap().bytes.clone();
 
     assert_eq!(
@@ -293,8 +291,7 @@ fn container_v2() {
 
 // ============================================================ scene read + rebuild
 
-/// Reads the golden container and checks the parsed scene fields (strengthened beyond the
-/// Kotlin selftest — the Kotlin suite never read a Scene back).
+/// Reads the golden container and checks the parsed scene fields.
 #[test]
 fn scene_read_from_golden() {
     let pf = PurFile::new(scratch_dir());
@@ -314,7 +311,7 @@ fn scene_read_from_golden() {
     let it = &scene.items[0];
     assert_eq!(
         it.name.as_deref(),
-        Some("/home/hilman/projects/DroidRef/bin-decode/corpus/scenes_in/S1_redbar/a_red64x48.png")
+        Some("a_red64x48.png")
     );
     assert_eq!(it.transform.unwrap().m11, 15.625);
     assert_eq!(it.sort_order.as_ref().unwrap().value(), 1.0);

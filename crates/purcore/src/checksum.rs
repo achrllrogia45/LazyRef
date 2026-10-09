@@ -1,7 +1,7 @@
 //! MD5 helpers.
 //!
 //! PureRef stores `md5(file[104:])` as a 32-char lowercase hex string, UTF-16BE, at
-//! container [40:104] (recon/32 §2); the legacy v1.x header uses `md5(file[108:])`
+//! container [40:104]; the legacy v1.x header uses `md5(file[108:])`
 //! at [44:108]. Both hex-encode lowercase.
 
 use md5::{Digest, Md5};

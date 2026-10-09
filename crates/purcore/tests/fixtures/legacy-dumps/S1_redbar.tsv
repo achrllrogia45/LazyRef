@@ -6,9 +6,9 @@ canvas.3	1.0e4
 zoom	1.0e0
 xCanvas	0
 yCanvas	0
-folderLocation	/home/hilman/projects/DroidRef/PureRef-format
-checksum.stored	97568085e47159175aef859fb48ef943
-checksum.computed	97568085e47159175aef859fb48ef943
+folderLocation	/home/user/projects/referencex/PureRef-format
+checksum.stored	4502ac67ed60c38bc029a8c216dd6d65
+checksum.computed	4502ac67ed60c38bc029a8c216dd6d65
 checksum.matches	true
 image.count	1
 image.0.address.0	224
@@ -17,8 +17,8 @@ image.0.png.length	157
 image.0.png.md5	3f97a27e8cbfd743b3d6e3a675290a0b
 image.0.head4	89504e47
 image.0.transform.count	1
-image.0.transform.0.source	/home/hilman/projects/DroidRef/bin-decode/corpus/scenes_in/S1_redbar/a_red64x48.png
-image.0.transform.0.name	/home/hilman/projects/DroidRef/bin-decode/corpus/scenes_in/S1_redbar/a_red64x48.png
+image.0.transform.0.source	/home/user/projects/reference-board-workspace-01/scenes_in/S1_redbar/a_red64x48.png
+image.0.transform.0.name	/home/user/projects/reference-board-workspace-01/scenes_in/S1_redbar/a_red64x48.png
 image.0.transform.0.matrix.0	1.5625e1
 image.0.transform.0.matrix.1	0.0
 image.0.transform.0.matrix.2	0.0

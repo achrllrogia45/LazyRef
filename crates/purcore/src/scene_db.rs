@@ -1,6 +1,4 @@
-//! Scene database: the 7-table schema (recon/31 §2 / recon/35 §1, verbatim DDL) and row <->
-//! [`Scene`] mapping (Kotlin `SceneDb.kt`; rusqlite is the engine, replacing the Kotlin
-//! `SqliteEngine` seam).
+//! Scene database: the 7-table schema and row <-> [`Scene`] mapping (rusqlite is the engine).
 //!
 //! Blob columns are stored as TEXT via the latin-1 quirk ([`crate::blobs`]); every read
 //! decodes, every write re-encodes field-for-field so desktop->Android->desktop round-trips
@@ -12,21 +10,20 @@ use rusqlite::Connection;
 use crate::blobs::{self};
 use crate::model::*;
 
-/// `PRAGMA application_id` — 0x3812c3fe (recon/31 §1).
+/// `PRAGMA application_id` — 0x3812c3fe.
 pub const APPLICATION_ID: i64 = 940753918;
 
-/// `PRAGMA user_version` — 0x30da5 (recon/31 §1).
+/// `PRAGMA user_version` — 0x30da5.
 pub const USER_VERSION: i64 = 200101;
 
 /// Application version written by PureRef 2.1.3.
 pub const APPLICATION_VERSION: &str = "2.1.3";
 
-/// Verbatim DDL from recon/35 §1 (byte-identical across two independent live DBs, including
-/// no space after commas).
+/// The DDL below matches app-written databases byte-for-byte (including no space after
+/// commas).
 ///
 /// Order matches the rootpage order in app-written corpus files (verified 9/9) — the app's
 /// new-DB path creates tables in this order and the byte-exact page layout depends on it.
-/// (The Kotlin list order differs; it never wrote a DB from scratch, so it never noticed.)
 pub const SCHEMA: [&str; 7] = [
     "CREATE TABLE images (width INTEGER,checksum TEXT,format TEXT,source TEXT,height INTEGER,data BLOB,source_type INTEGER,origin TEXT,id INTEGER PRIMARY KEY);",
     "CREATE TABLE items_groups (lock_mode INTEGER,background_color TEXT,id INTEGER PRIMARY KEY);",
@@ -254,7 +251,7 @@ pub fn write(conn: &mut Connection, scene: &Scene) {
 
 // ------------------------------------------------------------------ helpers
 
-/// Serialized blob bytes -> TEXT value to bind (the latin-1 quirk; recon/33 §1).
+/// Serialized blob bytes -> TEXT value to bind (the latin-1 quirk).
 fn stored(b: &[u8]) -> String {
     blobs::bytes_to_stored_text(b)
 }

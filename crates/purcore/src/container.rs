@@ -1,6 +1,6 @@
-//! Container layer for PureRef 2.x `.pur` files (Kotlin `ContainerCodec.kt`).
+//! Container layer for PureRef 2.x `.pur` files.
 //!
-//! Layout (recon/32 §3 + recon/36 H1/H2; reassembly verified in recon/34 (a.3)):
+//! Layout:
 //!
 //! ```text
 //! [ container chunk C: 108 B header + thumbnail JPEG ][ DB[C_len : db_size] ][ DB[0 : C_len] head copy ]
@@ -39,7 +39,7 @@ pub struct ContainerHeader {
 
 /// Sniffs the file format from the version string at [0:10].
 ///
-/// The app uses dotted-numeric `compareVersions` against "2.0" (recon/34 (d)); the two known
+/// The app compares dotted-numeric versions against "2.0"; the two known
 /// families are 1.x (legacy) and 2.x (containers), so a major-component check is sufficient.
 pub fn detect_format(bytes: &[u8]) -> Format {
     let major = read_qstring(bytes, 0)

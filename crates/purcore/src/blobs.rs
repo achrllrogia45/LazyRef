@@ -1,5 +1,4 @@
-//! PureRef 2.x blob codecs — Rust port of the Kotlin `BlobCodecs.kt` (itself a port of
-//! `tools/decode_blobs.py`, the byte-exact reference; facts in recon/33).
+//! PureRef 2.x blob codecs — the binary payloads stored in blob-typed columns.
 //!
 //! All columns are one family: `QDataStream << QVariant` with stream version 19 (Qt_5_15,
 //! pre-Qt-6 type ids), then stored via `QString::fromLatin1(bytes)` into a TEXT column.
@@ -26,7 +25,7 @@ pub const TYPE_USER_QT6: u32 = 65536;
 
 // ---------------------------------------------------------------- model types
 
-/// QTransform — always 9 doubles BE: m11 m12 m13 / m21 m22 m23 / m31 m32 m33 (recon/33 §3).
+/// QTransform — always 9 doubles BE: m11 m12 m13 / m21 m22 m23 / m31 m32 m33.
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct QTransform {
     pub m11: f64,
@@ -74,7 +73,7 @@ pub struct QRectF {
 /// BigRational — `items.sort_order` order key.
 ///
 /// Limbs are u32 values in [0, 0xFFFFFFFF], little-endian (limb[0] = least significant).
-/// Zero is encoded as `sign=0, limbs=[0]` (not empty) — preserve field-for-field (recon/33 §5).
+/// Zero is encoded as `sign=0, limbs=[0]` (not empty) — preserve field-for-field.
 #[derive(Debug, Clone, PartialEq)]
 pub struct BigRational {
     pub num_sign: i32,
@@ -106,7 +105,7 @@ impl BigRational {
     }
 }
 
-/// Odd-even `< x >` sign convention used by the app (recon/33 §5).
+/// Odd-even `< x >` sign convention used by the app.
 pub fn sign_of(x: i64) -> i32 {
     match x {
         x if x > 0 => 1,
@@ -303,7 +302,7 @@ pub fn encode_big_rational(r: &BigRational) -> Vec<u8> {
     encode_variant(TYPE_USER, &p, Some("BigRational"), 0)
 }
 
-/// Builds an integer ratio `n/d` (d > 0) in the app's normalized form (recon/33 §5/§7).
+/// Builds an integer ratio `n/d` (d > 0) in the app's normalized form.
 pub fn big_rational_of(n: i64, d: i64) -> BigRational {
     assert!(d > 0, "denominator must be positive: {d}");
     BigRational {
@@ -315,7 +314,7 @@ pub fn big_rational_of(n: i64, d: i64) -> BigRational {
 }
 
 fn read_limbs(p: &[u8], off: &mut usize) -> Vec<u32> {
-    let n = be::u64(p, *off); // u64 count; the app's reader clamps count < 1000 (recon/33 §5)
+    let n = be::u64(p, *off); // u64 count; the app's reader clamps count < 1000
     *off += 8;
     assert!(n <= 999, "implausible BigRational limb count {n}");
     let limbs = (0..n as usize).map(|i| be::u32(p, *off + 4 * i)).collect();
@@ -336,7 +335,7 @@ fn limbs_of(x: i64) -> Vec<u32> {
     out
 }
 
-/// Little-endian u32 limbs -> f64 (recon/33 §5 `_limbs_value`).
+/// Little-endian u32 limbs -> f64.
 fn limbs_to_f64(limbs: &[u32]) -> f64 {
     limbs
         .iter()
@@ -371,7 +370,7 @@ pub fn decode_path(b: &[u8]) -> QPainterPath {
         });
         off += 20;
     }
-    // empty path: payload is a bare u32 0, no cStart/fillRule (recon/33 §4)
+    // empty path: payload is a bare u32 0, no cStart/fillRule
     let (c_start, fill_rule) = if n > 0 {
         (be::i32(p, off), be::i32(p, off + 4))
     } else {

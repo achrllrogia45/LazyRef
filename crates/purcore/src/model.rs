@@ -1,4 +1,4 @@
-//! Scene model mirroring the 7 SQLite tables (Kotlin `SceneModel.kt`; verbatim DDL in recon/35 §1).
+//! Scene model mirroring the 7 SQLite tables.
 //!
 //! Types are the mechanical SQLite storage classes — nullable where the writer can leave a
 //! column NULL, otherwise raw (`i32` INTEGER, `f64` REAL, `String` TEXT, `Vec<u8>` BLOB).
@@ -85,8 +85,8 @@ pub struct Group {
 
 /// `items_drawings` — drawing subtype.
 ///
-/// `strokes` stays raw: the codec (`QList<GraphicsDrawItem::Stroke>`) has no captured samples
-/// (recon/33 §7 open item); decode once a drawing scene exists.
+/// `strokes` stays raw: the codec (`QList<GraphicsDrawItem::Stroke>`) has no captured samples;
+/// decode once a drawing scene exists.
 #[derive(Debug, Clone, Default, PartialEq)]
 pub struct Drawing {
     pub id: i64,

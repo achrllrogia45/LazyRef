@@ -2,7 +2,7 @@
 //!
 //! `screen = world * zoom + offset`
 //!
-//! Same shape as the Kotlin app's `canvasMatrix` (a single uniform scale +
+//! Same shape as the DroidRef app's `canvasMatrix` (a single uniform scale +
 //! translate applied over every sticker's own transform). No rendering or
 //! window dependency here on purpose — everything is unit-testable.
 

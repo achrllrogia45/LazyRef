@@ -1,5 +1,4 @@
-//! Legacy v1.x `.pur` reader — the pre-2.0 binary format ("1.10", 224-byte header)
-//! (Kotlin `LegacyReader.kt`).
+//! Legacy v1.x `.pur` reader — the pre-2.0 binary format ("1.10", 224-byte header).
 //!
 //! Read-only by design (there is no legacy writer). Port of the reference reader
 //! `PureRef-format/purformat/read.py`, field-for-field cross-checked in tests against the

@@ -1,5 +1,5 @@
 //! Public API of pur-core: read a `.pur` file into a [`Scene`], write a [`Scene`] back as a
-//! PureRef 2.x container (Kotlin `PurFile.kt`).
+//! PureRef 2.x container.
 //!
 //! SQLite needs a real file path, so the embedded DB is materialized into a scratch file
 //! (caller-supplied dir; the app passes `context.cacheDir`) for the duration of the call.
@@ -38,8 +38,8 @@ impl PurFile {
         }
     }
 
-    /// Reads a desktop `.pur`. Verifies the container checksum by default (the desktop app
-    /// rejects mismatches — recon/32 §2); pass `verify_checksum = false` for an explicit
+    /// Reads a desktop `.pur`. Verifies the container checksum by default (PureRef rejects
+    /// mismatches); pass `verify_checksum = false` for an explicit
     /// "open anyway" path.
     ///
     /// Legacy v1.x files are not a [`Scene`]: they predate the SQLite container and have no
@@ -89,8 +89,7 @@ impl PurFile {
         container::build(&db_bytes, thumbnail)
     }
 
-    /// Writes [`Self::write_bytes`] atomically: temp file in the target dir, then rename
-    /// (recon/32 §1).
+    /// Writes [`Self::write_bytes`] atomically: temp file in the target dir, then rename.
     pub fn write(&self, scene: &Scene, out_path: &Path, thumbnail: &[u8]) {
         let bytes = self.write_bytes(scene, thumbnail);
         let tmp = out_path.with_file_name(format!(

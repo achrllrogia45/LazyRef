@@ -1,7 +1,6 @@
-//! Big-endian read/write helpers (the Kotlin used `ByteBuffer` with its default BE order).
+//! Big-endian read/write helpers.
 //!
-//! All readers index a slice directly and panic on out-of-range access, matching the
-//! Kotlin `need()`/`BufferUnderflow` behavior on malformed input.
+//! All readers index a slice directly and panic on out-of-range access.
 
 pub(crate) fn i8(b: &[u8], off: usize) -> i8 {
     b[off] as i8
