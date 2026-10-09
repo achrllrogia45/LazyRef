@@ -9,3 +9,4 @@ license.workspace = true
 # glow (GL) + x11 keeps it runnable under Xvfb/llvmpipe; the default wgpu
 # backend wants a GPU. Add "wgpu" back when targeting real desktops.
 eframe = { version = "0.36.2", default-features = false, features = ["glow", "x11", "default_fonts"] }
+lazyref-board = { path = "../board" }

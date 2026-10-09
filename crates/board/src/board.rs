@@ -127,6 +127,20 @@ impl Board {
         self.pointers.clear();
     }
 
+    /// Remove the handling sticker, clear selection. None when nothing selected.
+    pub fn remove_handling(&mut self) -> Option<usize> {
+        let i = self.handling?;
+        if i >= self.stickers.len() {
+            self.handling = None;
+            return None;
+        }
+        self.stickers.remove(i);
+        self.handling = None;
+        self.mode = ActionMode::None;
+        self.pointers.clear();
+        Some(i)
+    }
+
     pub fn stickers(&self) -> &[Sticker] {
         &self.stickers
     }
@@ -836,6 +850,18 @@ mod tests {
         b.remove_all();
         assert!(b.stickers().is_empty());
         assert_eq!(b.handling, None);
+    }
+
+    #[test]
+    fn remove_handling_removes_selected() {
+        let mut b = Board::new();
+        b.add_sticker(sticker_at(0.0, 0.0, 10.0, 10.0));
+        b.add_sticker(sticker_at(50.0, 50.0, 10.0, 10.0));
+        assert_eq!(b.handling, Some(1));
+        assert_eq!(b.remove_handling(), Some(1));
+        assert_eq!(b.stickers.len(), 1);
+        assert_eq!(b.handling, None);
+        assert_eq!(b.remove_handling(), None);
     }
 
     #[test]

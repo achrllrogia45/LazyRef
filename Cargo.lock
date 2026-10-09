@@ -1142,6 +1142,7 @@ name = "lazyref"
 version = "0.1.0"
 dependencies = [
  "eframe",
+ "lazyref-board",
 ]
 
 [[package]]
