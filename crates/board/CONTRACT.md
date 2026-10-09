@@ -119,7 +119,15 @@ pub struct RefEntry {
     pub crop: (f32, f32, f32, f32), pub flip_h: bool, pub flip_v: bool,
 }
 pub struct RefImage { pub sha: String, pub bitmap: Vec<u8>, pub instances: Vec<RefEntry> }
-pub struct RefBoardData { pub version: i32, pub date: i64, pub canvas: [f32; 9], pub images: Vec<RefImage> }
+/// Text-sticker sidecar: text stickers persist their editable fields here, keyed by
+/// position in `RefBoardData.images`. The `bitmap` slot of a text image entry is
+/// written empty (no renderer in this crate); the shell re-renders text at load.
+pub struct RefText {
+    pub image_index: usize, pub text: String, pub size_px: f32,
+    pub color: (u8, u8, u8), pub background: Option<(u8, u8, u8)>, pub bold: bool,
+}
+pub struct RefBoardData { pub version: i32, pub date: i64, pub canvas: [f32; 9],
+                          pub images: Vec<RefImage>, pub texts: Vec<RefText> }
 pub fn encode(board: &RefBoardData) -> Vec<u8>;
 pub fn decode(bytes: &[u8]) -> Result<RefBoardData, String>;
 ```
@@ -127,8 +135,11 @@ pub fn decode(bytes: &[u8]) -> Result<RefBoardData, String>;
 Wire format (MessagePack, hand-rolled subset — no new deps):
 `int version, int64 date, 9×float32 canvas, array of (str sha, bin bitmap,
 array of entries)`, each entry = `4×int bounds, 2×float pos, float rot,
-2×float scale, 4×float crop, bool flipH, bool flipV`. Bitmaps deduped by
-`sha256_hex` of bytes (caller builds the map; encode writes what it's given).
+2×float scale, 4×float crop, bool flipH, bool flipV`,
+then an array of texts: `u16 image_index, str text, float32 size,
+3×u8 color, u8 has_bg, 3×u8 bg (zeros when none), u8 bold`.
+Bitmaps deduped by `sha256_hex` of bytes (caller builds the map; encode
+writes what it's given).
 
 ## `icons.rs` (lane ICONS)
 
@@ -143,6 +154,8 @@ pub enum IconOp { Delete, ScaleStep(f32), RotateLeft, RotateRight, FlipH, FlipV,
 pub fn apply_op(t: &mut Transform, op: &IconOp);
 /// Crop-edge drag under flips: map a gravity through the sticker's flip state.
 pub fn flip_gravity(gravity: u32, flip_h: bool, flip_v: bool) -> u32;
+/// Touch slop for icon hit-testing (matches the app's generous icon touch area).
+pub const ICON_TOUCH_RADIUS: f32 = 48.0;
 ```
 
 ## `board.rs` (lane BOARD)
