@@ -1,0 +1,10 @@
+/target
+/crates/*/target
+*.apk
+*.aab
+.gradle/
+local.properties
+.idea/
+*.iml
+*.jks
+*.keystore
